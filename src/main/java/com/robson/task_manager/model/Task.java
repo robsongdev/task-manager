@@ -3,21 +3,25 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank; // Importa a anotação para validação de string não vazia ou nula
-import jakarta.validation.constraints.Size;    // Importa a anotação para validação de tamanho de string
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.Column;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-/**
- * Classe de Modelo para a entidade Task.
- * Representa uma tarefa no sistema.
- * Adicionadas validações para garantir a integridade dos dados na entrada.
- */
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Task {
 
     @Id
@@ -32,4 +36,12 @@ public class Task {
     private String description;
 
     private boolean completed;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 }
